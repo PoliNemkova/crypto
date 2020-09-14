@@ -1,30 +1,33 @@
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as seabornInstance
-from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LinearRegression
-from sklearn import metrics
+# INSTRUCTIONS
 
-import csv 
-f = open('WHO-COVID19.csv')
-csv_f = csv.reader(f)
 
-for row in csv_f:
-  print (row)
   
-# getting current citcoin prices dataset
+# Getting current bitcoin prices dataset
+```
 !pip install bitfinex-tencars
+```
 
+```
 import bitfinex
 import pandas as pd
 import numpy as np
 import datetime
 import time
 import os
-
 import matplotlib.pyplot as plt
+import csv 
+
+f = open('WHO-COVID19.csv')
+csv_f = csv.reader(f)
+
+for row in csv_f:
+  print (row)
+```
+
+
+
 # Create a function to fetch the data
+```
 def fetch_data(start=1364767200000, stop=1545346740000, symbol='btcusd', interval='1m', tick_limit=1000, step=60000000):
     # Create api instance
     api_v2 = bitfinex.bitfinex_v2.api_v2()
@@ -41,32 +44,44 @@ def fetch_data(start=1364767200000, stop=1545346740000, symbol='btcusd', interva
                                                             pd.to_datetime(end, unit='ms'), symbol))
         time.sleep(1.5)
     return data
+
+```    
     
-    
-    # Define query parameters
+# Define query parameters
+```
 pair = 'BTCUSD' # What is the currency pair we are interested in
 bin_size = '1m' # This is the resolution at which we request the data
 limit = 1000 # How many data points per call are we asking for
 time_step = 1000 * 60 * limit # From the above calulate the size of each sub querry
+```
 
 # Fill in the start and end time of interest and convert it to timestamps
+```
 t_start = datetime.datetime(2019, 6, 1, 0, 0)
 t_start = time.mktime(t_start.timetuple()) * 1000
 
 t_stop = datetime.datetime(2020, 9, 13, 23, 59)
 t_stop = time.mktime(t_stop.timetuple()) * 1000
+```
 
 # Create an bitfinex_api instance
+```
 api_v1 = bitfinex.bitfinex_v1.api_v1()
+```
 
 # Collect the data
+```
 pair_data = fetch_data(start=t_start, stop=t_stop, symbol=pair, interval=bin_size, tick_limit=limit, step=time_step)
+```
 
 # Remove error messages
+```
 ind = [np.ndim(x) != 0 for x in pair_data]
 pair_data = [i for (i, v) in zip(pair_data, ind) if v]
+```
 
 # Create pandas data frame and clean data
+```
 names = ['time', 'open', 'close', 'high', 'low', 'volume']
 df = pd.DataFrame(pair_data, columns=names)
 df.drop_duplicates(inplace=True)
@@ -84,19 +99,30 @@ ax.set_title('Bitcoin closing price from {} to {}'.format(df.index[0], df.index[
 ax.grid()
 
 plt.show()
+```
 
 # Path to the old data from the 400+ crypto currency pairs at 1-minute resolution dataset
+```
 path_name = ('../input/392-crypto-currency-pairs-at-minute-resolution/cryptominuteresolution/btcusd.csv')
+```
 
 # Load the data
+```
 df_old = pd.read_csv(path_name, index_col='time')
+```
 
 # Convert timestamp to datetime
+```
 df_old.index = pd.to_datetime(df_old.index, unit='ms')
+```
 
 # Append the new data to the old data set
+```
 df_old = df_old.append(df)
+```
 
 # Remove duplicates and sort the data
+```
 df_old.drop_duplicates(inplace=True)
 df_old.sort_index(inplace=True)
+```
