@@ -100,3 +100,10 @@ df_old = df_old.append(df)
 # Remove duplicates and sort the data
 df_old.drop_duplicates(inplace=True)
 df_old.sort_index(inplace=True)
+
+
+#saving panda dataframe into csv file
+compression_opts = dict(method='zip',
+                        archive_name='out.csv')  
+df.to_csv('out.zip', index=False,
+          compression=compression_opts) 
