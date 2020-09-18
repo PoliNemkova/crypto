@@ -1,4 +1,4 @@
-﻿Date_reported, Country_code, Country, WHO_region, New_cases, Cumulative_cases, New_deaths, Cumulative_deaths
+﻿Date_reported,Country_code,Country,WHO_region,New_cases,Cumulative_cases,New_deaths,Cumulative_deaths
 2020-02-24,AF,Afghanistan,EMRO,5,5,0,0
 2020-02-25,AF,Afghanistan,EMRO,0,5,0,0
 2020-02-26,AF,Afghanistan,EMRO,0,5,0,0
